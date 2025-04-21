@@ -17,6 +17,6 @@ type Router struct {
 }
 
 type Auth struct {
-	Schema string `yaml:"key"`
-	Token  string `yaml"token"`
+	Key   string `yaml:"key"`
+	Token string `yaml:"token"`
 }
