@@ -10,5 +10,6 @@ type App struct {
 		Version string `yaml:"version"`
 	} `yaml:"app"`
 
-	Http HttpCfg `yaml:"http"`
+	Http     HttpCfg   `yaml:"http"`
+	Producer *Producer `yaml:"kafka"`
 }
