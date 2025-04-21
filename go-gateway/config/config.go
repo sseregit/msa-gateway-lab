@@ -9,4 +9,6 @@ type App struct {
 		Port    string `yaml:"port"`
 		Version string `yaml:"version"`
 	} `yaml:"app"`
+
+	Http HttpCfg `yaml:"http"`
 }
