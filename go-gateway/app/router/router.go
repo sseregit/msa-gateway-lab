@@ -44,10 +44,15 @@ func NewRouter(cfg config.App, clients map[string]client.HttpClient) Router {
 func (r Router) registerRouter(v config.Router) {
 	switch v.Method {
 	case http.GET:
-
 	case http.POST:
+		handler := AddPost(v, r.client)
+		r.engin.Post(v.Path, handler)
 	case http.DELETE:
+		handler := AddDelete(v, r.client)
+		r.engin.Delete(v.Path, handler)
 	case http.PUT:
+		handler := AddPut(v, r.client)
+		r.engin.Put(v.Path, handler)
 	default:
 		panic("Failed to find router method")
 	}
