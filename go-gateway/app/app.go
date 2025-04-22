@@ -16,13 +16,13 @@ func NewApp(lc fx.Lifecycle, router map[string]router.Router) App {
 
 	lc.Append(fx.Hook{
 		OnStart: func(c context.Context) error {
-
-			for _, r := range router {
-				if err := r.Run(); err != nil {
-					panic(err)
+			go func() {
+				for _, r := range router {
+					if err := r.Run(); err != nil {
+						panic(err)
+					}
 				}
-			}
-
+			}()
 			return nil
 		},
 		OnStop: func(c context.Context) error {

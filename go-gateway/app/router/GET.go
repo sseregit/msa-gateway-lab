@@ -61,19 +61,7 @@ func (r get) queryType(c *fiber.Ctx) error {
 
 func (r get) urlType(c *fiber.Ctx) error {
 	var builder strings.Builder
-	builder.WriteString(r.cfg.Path + "/")
-
-	routes := c.Route()
-	params := routes.Params
-
-	for i, p := range params {
-		v := utils.CopyString(c.Params(p))
-		builder.WriteString(v)
-
-		if i < len(params)-1 {
-			builder.WriteString("/")
-		}
-	}
+	builder.WriteString(string(c.Request().URI().Path()))
 
 	fullUrl := builder.String()
 

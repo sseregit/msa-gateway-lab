@@ -30,7 +30,7 @@ var Producer = fx.Module(
 		clients := make(map[string]kafka.Producer, len(cfg.App))
 
 		for _, a := range cfg.App {
-			clients[a.App.Name] = kafka.NewProducer(*a.Producer)
+			clients[a.App.Name] = kafka.NewProducer(a.Producer)
 		}
 		return clients
 	}),

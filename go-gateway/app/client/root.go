@@ -46,60 +46,56 @@ func NewHttpClient(
 }
 
 func (h HttpClient) GET(url string, router config.Router) (interface{}, error) {
-	var buffer interface{}
 	var err error
 	var req *resty.Request
 	var resp *resty.Response
 
-	req = getRequest(h.client, router).SetResult(&buffer)
+	req = getRequest(h.client, router)
 	if resp, err = req.Get(url); err != nil {
 		return nil, err
 	} else {
 		fmt.Println(resp)
-		return buffer, nil
+		return string(resp.Body()), nil
 	}
 
 }
 func (h HttpClient) POST(url string, router config.Router, requestBody interface{}) (interface{}, error) {
-	var buffer interface{}
 	var err error
 	var req *resty.Request
 	var resp *resty.Response
 
-	req = getRequest(h.client, router).SetResult(&buffer).SetBody(requestBody)
+	req = getRequest(h.client, router).SetBody(requestBody)
 	if resp, err = req.Post(url); err != nil {
 		return nil, err
 	} else {
 		fmt.Println(resp)
-		return buffer, nil
+		return string(resp.Body()), nil
 	}
 }
 func (h HttpClient) DELETE(url string, router config.Router, requestBody interface{}) (interface{}, error) {
-	var buffer interface{}
 	var err error
 	var req *resty.Request
 	var resp *resty.Response
 
-	req = getRequest(h.client, router).SetResult(&buffer)
+	req = getRequest(h.client, router)
 	if resp, err = req.Delete(url); err != nil {
 		return nil, err
 	} else {
 		fmt.Println(resp)
-		return buffer, nil
+		return string(resp.Body()), nil
 	}
 }
 func (h HttpClient) PUT(url string, router config.Router, requestBody interface{}) (interface{}, error) {
-	var buffer interface{}
 	var err error
 	var req *resty.Request
 	var resp *resty.Response
 
-	req = getRequest(h.client, router).SetResult(&buffer)
+	req = getRequest(h.client, router)
 	if resp, err = req.Put(url); err != nil {
 		return nil, err
 	} else {
 		fmt.Println(resp)
-		return buffer, nil
+		return string(resp.Body()), nil
 	}
 }
 

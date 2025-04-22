@@ -6,7 +6,7 @@ import (
 )
 
 type Config struct {
-	App []App `yaml:"app"`
+	App []App `yaml:"apps"`
 }
 
 type App struct {
@@ -16,8 +16,8 @@ type App struct {
 		Name    string `yaml:"name"`
 	} `yaml:"app"`
 
-	Http     HttpCfg   `yaml:"http"`
-	Producer *Producer `yaml:"kafka"`
+	Http     HttpCfg  `yaml:"http"`
+	Producer Producer `yaml:"kafka"`
 }
 
 func NewCfg(path string) Config {
