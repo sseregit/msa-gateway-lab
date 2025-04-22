@@ -1,7 +1,18 @@
 package main
 
-import "fmt"
+import (
+	"go-gateway/app"
+	"go-gateway/app/dependency"
+	"go.uber.org/fx"
+)
 
 func main() {
-	fmt.Println("실행")
+	fx.New(
+		dependency.Cfg,
+		dependency.HttpClient,
+		dependency.Producer,
+		dependency.Router,
+		fx.Provide(app.NewApp),
+		fx.Invoke(func(app.App) {}),
+	).Run()
 }

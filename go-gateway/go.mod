@@ -28,4 +28,5 @@ require (
 	golang.org/x/arch v0.0.0-20210923205945-b76863e36670 // indirect
 	golang.org/x/net v0.33.0 // indirect
 	golang.org/x/sys v0.28.0 // indirect
+	gopkg.in/yaml.v2 v2.4.0 // indirect
 )

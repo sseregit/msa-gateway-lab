@@ -20,7 +20,7 @@ func init() {
 var Cfg = fx.Module(
 	"config",
 	fx.Provide(func() config.Config {
-		//return config.New
+		return config.NewCfg(*yamlPath)
 	}),
 )
 
