@@ -37,6 +37,7 @@ func (r get) handleRequest(c *fiber.Ctx) error {
 
 func (r get) queryType(c *fiber.Ctx) error {
 	var builder strings.Builder
+	builder.WriteString(string(c.Request().URI().Path()))
 
 	for i, k := range r.cfg.Variable {
 		v := utils.CopyString(c.Query(k))

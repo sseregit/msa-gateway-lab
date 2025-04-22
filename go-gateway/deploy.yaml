@@ -16,3 +16,16 @@ apps:
         - method: "GET"
           get_type: "url"
           path: "/api/user/:id"
+
+        - method: "POST"
+          path: "/api/create"
+          header:
+            "Content-Type": "application/json"
+        - method: "DELETE"
+          path: "/api/delete"
+          header:
+            "Content-Type": "application/json"
+        - method: "PUT"
+          path: "/api/update"
+          header:
+            "Content-Type": "application/json"

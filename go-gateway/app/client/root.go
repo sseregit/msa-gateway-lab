@@ -54,7 +54,7 @@ func (h HttpClient) GET(url string, router config.Router) (interface{}, error) {
 	if resp, err = req.Get(url); err != nil {
 		return nil, err
 	} else {
-		fmt.Println(resp)
+		fmt.Println(resp, url)
 		return string(resp.Body()), nil
 	}
 
@@ -68,7 +68,6 @@ func (h HttpClient) POST(url string, router config.Router, requestBody interface
 	if resp, err = req.Post(url); err != nil {
 		return nil, err
 	} else {
-		fmt.Println(resp)
 		return string(resp.Body()), nil
 	}
 }
@@ -77,11 +76,10 @@ func (h HttpClient) DELETE(url string, router config.Router, requestBody interfa
 	var req *resty.Request
 	var resp *resty.Response
 
-	req = getRequest(h.client, router)
+	req = getRequest(h.client, router).SetBody(requestBody)
 	if resp, err = req.Delete(url); err != nil {
 		return nil, err
 	} else {
-		fmt.Println(resp)
 		return string(resp.Body()), nil
 	}
 }
@@ -90,11 +88,10 @@ func (h HttpClient) PUT(url string, router config.Router, requestBody interface{
 	var req *resty.Request
 	var resp *resty.Response
 
-	req = getRequest(h.client, router)
+	req = getRequest(h.client, router).SetBody(requestBody)
 	if resp, err = req.Put(url); err != nil {
 		return nil, err
 	} else {
-		fmt.Println(resp)
 		return string(resp.Body()), nil
 	}
 }

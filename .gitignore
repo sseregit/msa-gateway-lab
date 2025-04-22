@@ -3,3 +3,5 @@
 *.iml
 
 /go-gateway/go.sum
+
+/client/node_modules

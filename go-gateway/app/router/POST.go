@@ -21,7 +21,6 @@ func AddPost(
 }
 
 func (r post) handleRequest(c *fiber.Ctx) error {
-
 	apiResult, err := r.client.POST(r.cfg.Path, r.cfg, c.Request().Body())
 
 	if err != nil {

@@ -28,12 +28,12 @@ func NewRouter(cfg config.App, clients map[string]client.HttpClient) Router {
 	r.engin = fiber.New()
 	r.engin.Use(recover.New())
 
-	/*r.engin.Use(cors.New(cors.Config{
-		//AllowOrigins:
-		//AllowMethods:
-		//MaxAge:
-	}))*/
-
+	/*	r.engin.Use(cors.New(cors.Config{
+			//AllowOrigins:
+			//AllowMethods:
+			//MaxAge:
+		}))
+	*/
 	for _, v := range cfg.Http.Router {
 		r.registerRouter(v)
 	}

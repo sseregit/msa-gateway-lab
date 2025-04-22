@@ -1,0 +1,32 @@
+### /api/query
+GET http://localhost:8080/api/query?name=jang&age=34
+
+### /api/user/:id
+GET http://localhost:8080/api/user/jang_34
+
+### /api/create
+POST http://localhost:8080/api/create
+Content-Type: application/json
+
+{
+  "name": "jang",
+  "age": 34
+}
+
+### /api/delete
+DELETE http://localhost:8080/api/delete
+Content-Type: application/json
+
+{
+  "id": "jang_34"
+}
+
+### /api/update
+PUT http://localhost:8080/api/update
+Content-Type: application/json
+
+{
+  "name": "jang",
+  "age": 34,
+  "id": "jang_34"
+}
