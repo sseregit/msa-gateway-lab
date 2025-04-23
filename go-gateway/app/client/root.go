@@ -67,12 +67,21 @@ func (h *HttpClient) GET(url string, router config.Router) (interface{}, error) 
 	var req *resty.Request
 	var resp *resty.Response
 
-	req = getRequest(h.client, router)
-	if resp, err = req.Get(url); err != nil {
+	_, err = common.CB.Execute(func() ([]byte, error) {
+		req = getRequest(h.client, router)
+		if resp, err = req.Get(url); err != nil {
+			return nil, err
+		}
+
+		return nil, nil
+	})
+
+	defer h.handleRequestDefer(resp, req.Body)
+
+	if err != nil {
 		return nil, err
 	}
 
-	defer h.handleRequestDefer(resp, req.Body)
 	return string(resp.Body()), nil
 
 }
