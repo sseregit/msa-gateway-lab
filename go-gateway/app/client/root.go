@@ -45,17 +45,30 @@ func NewHttpClient(
 		SetJSONUnmarshaler(common.JsonHandler.Unmarshal).
 		SetBaseURL(cfg.Http.BaseUrl)
 
-	return HttpClient{
-		cfg:      cfg,
-		client:   client,
-		producer: producer[cfg.App.Name],
+	httpClient := HttpClient{
+		cfg:          cfg,
+		client:       client,
+		producer:     producer[cfg.App.Name],
+		batchTime:    batchTime,
+		mapper:       make([]ApiRequestTopic, 0),
+		fetchChannel: make(chan ApiRequestTopic),
 	}
+
+	if len(cfg.Producer.URL) > 0 {
+		go func() {
+			httpClient.loop()
+		}()
+	}
+
+	return httpClient
 }
 
 func (h HttpClient) GET(url string, router config.Router) (interface{}, error) {
 	var err error
 	var req *resty.Request
 	var resp *resty.Response
+
+	defer NewApiRequestTopic(resp, req)
 
 	req = getRequest(h.client, router)
 	if resp, err = req.Get(url); err != nil {
@@ -71,6 +84,8 @@ func (h HttpClient) POST(url string, router config.Router, requestBody interface
 	var req *resty.Request
 	var resp *resty.Response
 
+	defer NewApiRequestTopic(resp, req)
+
 	req = getRequest(h.client, router).SetBody(requestBody)
 	if resp, err = req.Post(url); err != nil {
 		return nil, err
@@ -83,6 +98,8 @@ func (h HttpClient) DELETE(url string, router config.Router, requestBody interfa
 	var req *resty.Request
 	var resp *resty.Response
 
+	defer NewApiRequestTopic(resp, req)
+
 	req = getRequest(h.client, router).SetBody(requestBody)
 	if resp, err = req.Delete(url); err != nil {
 		return nil, err
@@ -94,6 +111,8 @@ func (h HttpClient) PUT(url string, router config.Router, requestBody interface{
 	var err error
 	var req *resty.Request
 	var resp *resty.Response
+
+	defer NewApiRequestTopic(resp, req)
 
 	req = getRequest(h.client, router).SetBody(requestBody)
 	if resp, err = req.Put(url); err != nil {
