@@ -29,3 +29,9 @@ apps:
           path: "/api/update"
           header:
             "Content-Type": "application/json"
+    kafka:
+      url: "localhost:29092"
+      client_id: "msa_gateway_lab"
+      acks: "all"
+      topic: "api-trace"
+      batch_time: 1

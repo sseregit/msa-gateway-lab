@@ -1,7 +1,6 @@
 package client
 
 import (
-	"fmt"
 	"github.com/go-resty/resty/v2"
 	"go-gateway/common"
 	"go-gateway/config"
@@ -29,7 +28,7 @@ type HttpClient struct {
 func NewHttpClient(
 	cfg config.App,
 	producer map[string]kafka.Producer,
-) HttpClient {
+) *HttpClient {
 	batchTime := cfg.Producer.BatchTime
 
 	if batchTime == 0 {
@@ -60,66 +59,61 @@ func NewHttpClient(
 		}()
 	}
 
-	return httpClient
+	return &httpClient
 }
 
-func (h HttpClient) GET(url string, router config.Router) (interface{}, error) {
+func (h *HttpClient) GET(url string, router config.Router) (interface{}, error) {
 	var err error
 	var req *resty.Request
 	var resp *resty.Response
-
-	defer NewApiRequestTopic(resp, req)
 
 	req = getRequest(h.client, router)
 	if resp, err = req.Get(url); err != nil {
 		return nil, err
-	} else {
-		fmt.Println(resp, url)
-		return string(resp.Body()), nil
 	}
 
+	defer h.handleRequestDefer(resp, req.Body)
+	return string(resp.Body()), nil
+
 }
-func (h HttpClient) POST(url string, router config.Router, requestBody interface{}) (interface{}, error) {
+func (h *HttpClient) POST(url string, router config.Router, requestBody interface{}) (interface{}, error) {
 	var err error
 	var req *resty.Request
 	var resp *resty.Response
-
-	defer NewApiRequestTopic(resp, req)
 
 	req = getRequest(h.client, router).SetBody(requestBody)
 	if resp, err = req.Post(url); err != nil {
 		return nil, err
-	} else {
-		return string(resp.Body()), nil
 	}
+
+	defer h.handleRequestDefer(resp, req.Body)
+	return string(resp.Body()), nil
 }
-func (h HttpClient) DELETE(url string, router config.Router, requestBody interface{}) (interface{}, error) {
+func (h *HttpClient) DELETE(url string, router config.Router, requestBody interface{}) (interface{}, error) {
 	var err error
 	var req *resty.Request
 	var resp *resty.Response
-
-	defer NewApiRequestTopic(resp, req)
 
 	req = getRequest(h.client, router).SetBody(requestBody)
 	if resp, err = req.Delete(url); err != nil {
 		return nil, err
-	} else {
-		return string(resp.Body()), nil
 	}
+
+	defer h.handleRequestDefer(resp, req.Body)
+	return string(resp.Body()), nil
 }
-func (h HttpClient) PUT(url string, router config.Router, requestBody interface{}) (interface{}, error) {
+func (h *HttpClient) PUT(url string, router config.Router, requestBody interface{}) (interface{}, error) {
 	var err error
 	var req *resty.Request
 	var resp *resty.Response
 
-	defer NewApiRequestTopic(resp, req)
-
 	req = getRequest(h.client, router).SetBody(requestBody)
 	if resp, err = req.Put(url); err != nil {
 		return nil, err
-	} else {
-		return string(resp.Body()), nil
 	}
+
+	defer h.handleRequestDefer(resp, req.Body)
+	return string(resp.Body()), nil
 }
 
 func getRequest(client *resty.Client, router config.Router) *resty.Request {

@@ -15,10 +15,10 @@ type Router struct {
 
 	engin *fiber.App
 
-	client client.HttpClient
+	client *client.HttpClient
 }
 
-func NewRouter(cfg config.App, clients map[string]client.HttpClient) Router {
+func NewRouter(cfg config.App, clients map[string]*client.HttpClient) Router {
 	r := Router{
 		cfg:    cfg,
 		port:   fmt.Sprintf(":%s", cfg.App.Port),

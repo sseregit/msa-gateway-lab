@@ -8,12 +8,12 @@ import (
 
 type delete struct {
 	cfg    config.Router
-	client client.HttpClient
+	client *client.HttpClient
 }
 
 func AddDelete(
 	cfg config.Router,
-	client client.HttpClient,
+	client *client.HttpClient,
 ) func(c *fiber.Ctx) error {
 	r := delete{cfg: cfg, client: client}
 

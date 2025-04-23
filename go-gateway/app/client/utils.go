@@ -1,12 +1,13 @@
 package client
 
 import (
+	"fmt"
 	"github.com/go-resty/resty/v2"
 	"go-gateway/common"
 	"time"
 )
 
-func (h HttpClient) fetchToKafka() {
+func (h *HttpClient) fetchToKafka() {
 	h.fetchLock.Lock()
 	defer h.fetchLock.Unlock()
 
@@ -19,11 +20,13 @@ func (h HttpClient) fetchToKafka() {
 
 		if err == nil {
 			h.producer.SendEvent(v)
+		} else {
+			fmt.Println("err", err)
 		}
 	}
 }
 
-func (h HttpClient) loop() {
+func (h *HttpClient) loop() {
 	ticker := time.NewTicker(time.Duration(h.batchTime) * time.Second)
 
 	defer ticker.Stop()
@@ -36,7 +39,7 @@ func (h HttpClient) loop() {
 	}
 }
 
-func (h HttpClient) handleRequestDefer(resp *resty.Response, request interface{}) {
+func (h *HttpClient) handleRequestDefer(resp *resty.Response, request interface{}) {
 	if len(h.cfg.Producer.URL) > 0 {
 		h.mapper = append(h.mapper, NewApiRequestTopic(resp, request))
 	}
