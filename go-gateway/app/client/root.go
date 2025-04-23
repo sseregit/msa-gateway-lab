@@ -6,6 +6,7 @@ import (
 	"go-gateway/common"
 	"go-gateway/config"
 	"go-gateway/kafka"
+	"sync"
 )
 
 const (
@@ -17,6 +18,12 @@ type HttpClient struct {
 	cfg    config.App
 
 	producer kafka.Producer
+
+	batchTime float64
+
+	fetchLock    sync.Mutex
+	mapper       []ApiRequestTopic
+	fetchChannel chan ApiRequestTopic
 }
 
 func NewHttpClient(
